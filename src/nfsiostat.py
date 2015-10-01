@@ -211,7 +211,10 @@ class DeviceData:
         # the reference to them.  so we build new lists here
         # for the result object.
         for op in result.__rpc_data['ops']:
-            result.__rpc_data[op] = map(combination, self.__rpc_data[op], add_stats.__rpc_data[op])
+            if op not in add_stats.__rpc_data:
+                result.__rpc_data[op] = list(self.__rpc_data[op])
+            else:
+                result.__rpc_data[op] = map(combination, self.__rpc_data[op], add_stats.__rpc_data[op])
 
         # update the remaining keys we care about
         result.__rpc_data['rpcsends'] += add_stats.__rpc_data['rpcsends']
@@ -240,7 +243,10 @@ class DeviceData:
         # the reference to them.  so we build new lists here
         # for the result object.
         for op in result.__rpc_data['ops']:
-            result.__rpc_data[op] = map(difference, self.__rpc_data[op], old_stats.__rpc_data[op])
+            if op not in old_stats.__rpc_data:
+                result.__rpc_data[op] = list(self.__rpc_data[op])
+            else:
+                result.__rpc_data[op] = map(difference, self.__rpc_data[op], old_stats.__rpc_data[op])
 
         # update the remaining keys we care about
         result.__rpc_data['rpcsends'] -= old_stats.__rpc_data['rpcsends']
